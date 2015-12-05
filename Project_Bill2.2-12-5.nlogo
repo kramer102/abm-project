@@ -143,23 +143,35 @@ to pac-eat
     ifelse (any? potential-pills)
     [eat-pill]
     [
-      set energy energy + min (list psugar appetite) * catabolism
-      set psugar psugar - min (list psugar appetite)]
+      ifelse (item 0 dna = 0)
+      [
+        set energy energy + min (list psugar appetite) * catabolism
+        set psugar psugar - min (list psugar appetite)
+      ]
+      [
+        let amount-to-take min (list psugar appetite pO2)
+        set energy energy + amount-to-take * catabolism
+        set psugar psugar - amount-to-take
+        set pO2 pO2 - amount-to-take
+      ]
+    ]
     ]
 end
 
 ;; if the infector has O2 metab then the host O2 is 0 but the patch O2 is still set to 0
+;; pacs just setting O2 to 0 is not consistent with pO2 being used for catabolims
+;; changing to a constant decrease for exposure
 to pac-O2
   ask pacmen [
     ifelse (infected)
     [
       set O2 O2 + pO2 * .5   ;; just treat like a normal pac, but if the infector takes O2 we'll set it to zero
-      set pO2 0
+      set pO2 (list (pO2 - 2) 0)
       foreach infectors [ if (item 0 dna = 1) [ask ? [ask host-pac [set O2 0]]]]
     ]
     [
       set O2 O2 + pO2 * .5
-      set pO2 0
+      set pO2 (list (pO2 - 2) 0)
     ]
   ]
 end
@@ -305,7 +317,7 @@ to-report best-next-pac-patch [search-space]
     ifelse (item 4 dna = 1)
     [
       ifelse (item 0 dna = 1) ;;has O2 tollerance and O2 catabolism
-      [ set best-spot search-space with [not any? turtles-here] with-max [psugar + pO2]] ;; could pick better criteria ??
+      [ set best-spot search-space with [not any? turtles-here] with-max [min (list psugar pO2)]] ;; could pick better criteria ??
       [ set best-spot search-space with [not any? turtles-here] with-max [psugar]]
     ]
     [
