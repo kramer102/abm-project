@@ -258,7 +258,8 @@ to-report set-view
   let possible-canidates patches at-points look-here  ;; just setting the defualt to low metab low motility
   if (item 2 dna = 1) ;; if high metab, then use moore neighbors
     [ set look-here (list(list 0 1) (list 1 0) (list 0 -1) (list -1 0 ) (list 0 0)
-        (list 1 1) (list -1 1) (list -1 -1) (list 1 -1)) ;; moore plus current location
+        (list 1 1) (list -1 1) (list -1 -1) (list 1 -1) ;; moore plus current location
+        (list 2 2) (list 2 -2) (list -2 2) (list -2 -2)) ;; plus higher diag for heterogeneity
       set possible-canidates patches at-points look-here
     ]
     report possible-canidates
@@ -581,7 +582,7 @@ number-of-pills
 number-of-pills
 0
 30
-1
+8
 1
 1
 NIL
@@ -596,7 +597,7 @@ number-of-pacmen
 number-of-pacmen
 0
 30
-0
+4
 1
 1
 NIL
@@ -750,7 +751,7 @@ high-metabolism
 high-metabolism
 0
 10
-5
+1.4
 .2
 1
 NIL
@@ -765,7 +766,7 @@ low-metabolism
 low-metabolism
 0
 10
-1.8
+1
 .2
 1
 NIL
