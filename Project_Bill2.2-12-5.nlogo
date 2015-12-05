@@ -129,7 +129,7 @@ to pill-eat
         let amount-to-take min (list psugar appetite pO2)
         set energy energy + amount-to-take * catabolism
       set psugar psugar - amount-to-take
-      set pO2 pO2 - amount-to-take]
+      set pO2 max (list (pO2 - amount-to-take) 0)]
     [ let amount-to-take min (list psugar appetite)
       set energy energy + amount-to-take * catabolism
       set psugar psugar - amount-to-take]]
@@ -152,7 +152,7 @@ to pac-eat
         let amount-to-take min (list psugar appetite pO2)
         set energy energy + amount-to-take * catabolism
         set psugar psugar - amount-to-take
-        set pO2 pO2 - amount-to-take
+        set pO2 max (list (pO2 - amount-to-take) 0)
       ]
     ]
     ]
@@ -166,12 +166,12 @@ to pac-O2
     ifelse (infected)
     [
       set O2 O2 + pO2 * .5   ;; just treat like a normal pac, but if the infector takes O2 we'll set it to zero
-      set pO2 (list (pO2 - 2) 0)
+      set pO2 min (list (abs (pO2 - 2)) 0)
       foreach infectors [ if (item 0 dna = 1) [ask ? [ask host-pac [set O2 0]]]]
     ]
     [
       set O2 O2 + pO2 * .5
-      set pO2 (list (pO2 - 2) 0)
+      set pO2 min (list abs (pO2 - 2) 0)
     ]
   ]
 end
@@ -212,7 +212,7 @@ end
 
 to regrow-pO2
   ask patches [
-    set pO2 min (list max-pO2 (pO2 + .5)) ;; I'm saying O2 comes back slower
+    set pO2 min (list max-pO2 abs (pO2 + .5)) ;; I'm saying O2 comes back slower
   ]
 end
 
@@ -394,7 +394,7 @@ to setup-patches
       [set max-pO2 O2spout2]
 
     if max-pO2 < 0
-      [set pO2 0]
+      [set max-pO2 0]
     set pO2 max-pO2
     set sugar-patches patches with [psugar > 0]
     set O2-patches patches with [pO2 > 0]
