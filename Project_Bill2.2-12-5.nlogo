@@ -78,7 +78,10 @@ to pills-look-move
     if (infecting = true) [ stop ] ;; if they infect then their metabolism decreases
     set energy energy - metabolism ;; taking away energy
     let search-space set-view ;; more searching with higher metab between ticks
-    let best-location search-space with [not any? turtles-here] with-max [psugar] ;; I realize there will always be an agent on myself patch should change !!
+    let best-location 0
+    ifelse (item 0 dna = 0)
+    [set best-location search-space with [not any? turtles-here] with-max [psugar]] ;; I realize there will always be an agent on myself patch should change !!
+    [set best-location search-space with [not any? turtles-here] with-max [min (list psugar pO2)]] ;; they can't metabolize any more sugar than there is O2 available
     if one-of best-location = nobody [ stop ] ;; if there aren't any spots to move then don't move
     move-to one-of best-location ;;random best location
 
