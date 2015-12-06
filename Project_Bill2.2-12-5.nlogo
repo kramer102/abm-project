@@ -424,7 +424,7 @@ to setup-pills
     set color pink
     set size 2
     let catab-var 0                     ;;[0] very few pills begin with catabolism with O2 (like 6 fold better)
-    let infectious 1 ; testing random 2             ;;[1] Some pills are able to survive phagocytosis
+    let infectious random 2             ;;[1] Some pills are able to survive phagocytosis
     let metab-var random 2             ;;[2] 0 is bad 1 is
     let phagocytositic 0                  ;;[3] pills are not capable of phagocytosis
     let O2-tolerance 1                  ;;[4] pills are naturally O2 tollerent
@@ -458,7 +458,7 @@ to setup-pacmen
     set color blue
     set size 3
     let catab-var 0                     ;;[0] no pacmen begin with O2 type catabolism
-    let infectability 0;set for testing random 2             ;;[1] Some pacmen can kill all pills phagocitized
+    let infectability random 2             ;;[1] Some pacmen can kill all pills phagocitized
     let metab-var random 2             ;;[2] 0 is low motility / low metab 1 is high motility / high motab
     let phagocytositic 1                  ;;[3] pacmen cannot be phagocitized
     let O2-tolerance 0                  ;;[4] pacmen do not have O2 tollerance
@@ -482,7 +482,7 @@ end
 ;    set color blue
 ;    set size 3
 ;    let catab-var 0                     ;;[0] no pacmen begin with O2 type catabolism
-;    let infectability 0;set for testing random 2             ;;[1] Some pacmen can kill all pills phagocitized
+;    let infectability random 2             ;;[1] Some pacmen can kill all pills phagocitized
 ;    let metab-var random 2             ;;[2] 0 is low motility / low metab 1 is high motility / high motab
 ;    let phagocytositic 1                  ;;[3] pacmen cannot be phagocitized
 ;    let O2-tolerance 0                  ;;[4] pacmen do not have O2 tollerance
