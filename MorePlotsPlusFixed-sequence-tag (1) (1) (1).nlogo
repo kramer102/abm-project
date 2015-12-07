@@ -1,4 +1,6 @@
-;; Lateral gene transfer as explanation of rise of eukariots
+;; Lateral gene transfer as explanation of rise of eukaryotes
+
+
 
 globals [
   sugar-patches
@@ -19,6 +21,7 @@ turtles-own [
   catabolism ;if [0] of dna = 1 -> 6 fold better
   metabolism ;if [2] of dna = 1 -> fast
   dna
+  sequence-tag
 ]
 
 
@@ -45,6 +48,7 @@ to setup
   setup-pills
   setup-pacmen
   set number-of-new-pills 1
+  sequence-tag-set
   reset-ticks
 end
 
@@ -67,6 +71,10 @@ to go
   [if check-pac-death [die]]
   ask pills
   [if check-pill-death [die]]
+sequence-tag-set
+ ; histogram [dna] of turtles
+ ; set-current-plot
+
   tick
 end
 
@@ -383,22 +391,24 @@ to-report classify [new-turtle]
   report class
   ;; could make one for pills too.  Could use to make offspring of pac into pills too
 end
+
+to-report dna-average-pill
+;  histogram ([sequence-tag] of turtles)
+end
+to-report dna-average-pacman
+end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; setup procedures ;;;;;;;;;;;;;
 
 
 to setup-patches
   ask patches
   [
-    let n 16
-    let z sugar-levels
-    while [z >= 0]
-    [if (pxcor = n)
+    let sugarhill1 sugar-levels - ( distancexy 12 12 ) * .35
+    let sugarhill2 sugar-levels - ( distancexy 37 37 ) * .35
 
-      [ print "1"
-        set max-psugar z
-      ]
-    set z z - .5
-    set n n - 1  ]
+    ifelse sugarhill1 > sugarhill2
+      [set max-psugar sugarhill1]
+      [set max-psugar sugarhill2]
 
     if max-psugar < 0
       [set max-psugar 0]
@@ -406,27 +416,20 @@ to setup-patches
 
 
 
-    set n 16
-    set z sugar-levels ; O2 levels same as sugar for this
-    while [z >= 0]
-    [if (pycor = n)
+    let O2spout1 4 - ( distancexy -12 12 ) * .35
+    let O2spout2 4 - ( distancexy -37 37 ) * .35
 
-      [ print "1"
-        set max-pO2 z
-      ]
-    set z z - .5
-    set n n - 1  ]
+    ifelse O2spout1 > O2spout2
+      [set max-pO2 O2spout1]
+      [set max-pO2 O2spout2]
 
     if max-pO2 < 0
       [set max-pO2 0]
     set pO2 max-pO2
-
-
-
+    set sugar-patches patches with [psugar > 0]
+    set O2-patches patches with [pO2 > 0]
 
   ]
-  set sugar-patches patches with [psugar > 0]
-  set O2-patches patches with [pO2 > 0]
   color-sugar-patches
 end
 
@@ -534,26 +537,56 @@ to setup-new-pills ;;the kind we need for supers
 
 end
 
+to sequence-tag-set
+  ask turtles
+[
+if ([dna] of self  = [0 0 0 0 0])[set sequence-tag 0]
+if ([dna] of self  = [0 0 0 0 1])[set sequence-tag 1]
+if ([dna] of self  = [0 0 0 1 0])[set sequence-tag 2]
+if ([dna] of self  = [0 0 0 1 1])[set sequence-tag 3]
+if ([dna] of self  = [0 0 1 0 0])[set sequence-tag 4]
+if ([dna] of self  = [0 0 1 0 1])[set sequence-tag 5]
+if ([dna] of self  = [0 0 1 1 0])[set sequence-tag 6]
+if ([dna] of self  = [0 0 1 1 1])[set sequence-tag 7]
+if ([dna] of self  = [0 1 0 0 0])[set sequence-tag 8]
+if ([dna] of self  = [0 1 0 0 1])[set sequence-tag 9]
+if ([dna] of self  = [0 1 0 1 0])[set sequence-tag 10]
+if ([dna] of self  = [0 1 0 1 1])[set sequence-tag 11]
+if ([dna] of self  = [0 1 1 0 0])[set sequence-tag 12]
+if ([dna] of self  = [0 1 1 0 1])[set sequence-tag 13]
+if ([dna] of self  = [0 1 1 1 0])[set sequence-tag 14]
+if ([dna] of self  = [0 1 1 1 1])[set sequence-tag 15]
+if ([dna] of self  = [1 0 0 0 0])[set sequence-tag 16]
+if ([dna] of self  = [1 0 0 0 1])[set sequence-tag 17]
+if ([dna] of self  = [1 0 0 1 0])[set sequence-tag 18]
+if ([dna] of self  = [1 0 0 1 1])[set sequence-tag 19]
+if ([dna] of self  = [1 0 1 0 0])[set sequence-tag 20]
+if ([dna] of self  = [1 0 1 0 1])[set sequence-tag 21]
+if ([dna] of self  = [1 0 1 1 0])[set sequence-tag 22]
+if ([dna] of self  = [1 0 1 1 1])[set sequence-tag 23]
+if ([dna] of self  = [1 1 0 0 0])[set sequence-tag 24]
+if ([dna] of self  = [1 1 0 0 1])[set sequence-tag 25]
+if ([dna] of self  = [1 1 0 1 0])[set sequence-tag 26]
+if ([dna] of self  = [1 1 0 1 1])[set sequence-tag 27]
+if ([dna] of self  = [1 1 1 0 0])[set sequence-tag 28]
+if ([dna] of self  = [1 1 1 0 1])[set sequence-tag 29]
+if ([dna] of self  = [1 1 1 1 0])[set sequence-tag 30]
+if ([dna] of self  = [1 1 1 1 1])[set sequence-tag 31]
+]
+end
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; End Setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
-
-
-
-
-
-
 
 
 @#$#@#$#@
 GRAPHICS-WINDOW
 239
 10
-678
-470
-16
-16
+912
+704
+-1
+-1
 13.0
 1
 10
@@ -564,10 +597,10 @@ GRAPHICS-WINDOW
 1
 1
 1
--16
-16
--16
-16
+0
+50
+0
+50
 0
 0
 1
@@ -626,30 +659,30 @@ NIL
 1
 
 SLIDER
-17
-148
-189
-181
+27
+251
+199
+284
 number-of-pills
 number-of-pills
 0
-30
-8
+200
+15
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-17
-185
-189
-218
+27
+283
+199
+316
 number-of-pacmen
 number-of-pacmen
 0
-30
-4
+200
+5
 1
 1
 NIL
@@ -690,10 +723,10 @@ NIL
 1
 
 SLIDER
-16
-227
-188
-260
+26
+316
+198
+349
 low-catab-value
 low-catab-value
 0
@@ -705,57 +738,42 @@ NIL
 HORIZONTAL
 
 SLIDER
-15
-267
-187
-300
+26
+347
+198
+380
 sugar-levels
 sugar-levels
 0
 20
-9
+10
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-22
-314
-194
-347
+27
+381
+199
+414
 sugar-regrowth-rate
 sugar-regrowth-rate
 0
 3
-0.6
+1.2
 .2
 1
 NIL
 HORIZONTAL
 
 SLIDER
-14
-354
-186
-387
+26
+415
+198
+448
 energy-needed-repro
 energy-needed-repro
-0
-40
-20
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-18
-398
-215
-431
-O2-starv-danger-threshold
-O2-starv-danger-threshold
 0
 40
 20
@@ -766,14 +784,29 @@ HORIZONTAL
 
 SLIDER
 25
-450
-202
-483
-energy-take-from-host
-energy-take-from-host
+447
+200
+480
+O2-starv-danger-threshold
+O2-starv-danger-threshold
 0
+40
+20
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+23
+480
+200
+513
+energy-take-from-host
+energy-take-from-host
+-3
 3
-0
+-1
 .2
 1
 NIL
@@ -781,9 +814,9 @@ HORIZONTAL
 
 SLIDER
 24
-490
+512
 196
-523
+545
 swap-rate
 swap-rate
 0
@@ -795,10 +828,10 @@ percent
 HORIZONTAL
 
 SLIDER
-258
-500
-430
-533
+24
+545
+196
+578
 high-metabolism
 high-metabolism
 0
@@ -810,10 +843,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-458
-509
-630
-542
+23
+578
+195
+611
 low-metabolism
 low-metabolism
 0
@@ -823,6 +856,67 @@ low-metabolism
 1
 NIL
 HORIZONTAL
+
+PLOT
+18
+721
+218
+871
+dna of turtles
+sequence-tag
+NIL
+0.0
+32.0
+0.0
+100.0
+true
+true
+"" "set-histogram-num-bars 32\nset-plot-pen-interval 1\nset-plot-x-range 0 31"
+PENS
+"pen-0" 1.0 1 -16777216 true "" "histogram ([sequence-tag] of turtles)"
+
+PLOT
+224
+720
+424
+870
+Pill  Populations
+time
+count
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot count turtles"
+"pen-1" 1.0 0 -7500403 true "" "plot count pills"
+"pen-2" 1.0 0 -2674135 true "" "plot count pills with [infecting = true]"
+"pen-3" 1.0 0 -955883 true "" "plot count pills with [infecting = false]"
+"pen-4" 1.0 0 -6459832 true "" ""
+
+PLOT
+427
+721
+627
+871
+Pacmen Populations
+time
+count
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot count turtles"
+"pen-1" 1.0 0 -7500403 true "" "plot count pacmen"
+"pen-2" 1.0 0 -2674135 true "" "plot count pacmen with [infected = true]"
+"pen-3" 1.0 0 -955883 true "" "plot count pacmen with [breed = \"super\"]"
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -1171,6 +1265,56 @@ NetLogo 5.2.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="experiment" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="number-of-pacmen">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="number-of-pills">
+      <value value="8"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="high-metabolism">
+      <value value="1.4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sugar-regrowth-rate">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="low-catab-value">
+      <value value="0.3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="swap-rate">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="energy-take-from-host">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="energy-needed-repro">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="low-metabolism">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="O2-starv-danger-threshold">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sugar-levels">
+      <value value="9"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="experiment" repetitions="5" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="energy-take-from-host">
+      <value value="-1"/>
+      <value value="1"/>
+      <value value="2"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
