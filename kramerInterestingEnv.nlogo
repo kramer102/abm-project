@@ -6,7 +6,7 @@ globals [
   sugar-patches
   O2-patches
   number-of-new-pills
-  super
+  supers
 
 ]
 
@@ -57,8 +57,8 @@ to go
    if not any? turtles [
     stop
   ]
-   if (not any? pills)
-   [setup-new-pills]
+;   if (not any? pills)
+;   [setup-new-pills]
   pills-look-move
   pac-look-move
   pill-eat
@@ -73,7 +73,7 @@ to go
   ask pills
   [if check-pill-death [die]]
   ask turtles [sequence-tag-set]
-  update-super
+  update-supers
   track-sequence
  ; histogram [dna] of turtles
  ; set-current-plot
@@ -299,8 +299,8 @@ to track-sequence
   ]
 end
 
-to update-super
-  set super pacmen with [color = 113]
+to update-supers
+  set supers pacmen with [color = 113]
 end
 
 
@@ -503,6 +503,7 @@ to setup-pills
 end
 
 to setup-pacmen
+  set supers no-turtles
   create-pacmen number-of-pacmen [
     move-to one-of patches with [not any? other turtles-here]
     set energy 10
@@ -692,7 +693,7 @@ number-of-pills
 number-of-pills
 0
 200
-15
+25
 1
 1
 NIL
@@ -707,7 +708,7 @@ number-of-pacmen
 number-of-pacmen
 0
 200
-5
+11
 1
 1
 NIL
@@ -771,7 +772,7 @@ sugar-levels
 sugar-levels
 0
 20
-7
+4
 1
 1
 NIL
@@ -943,11 +944,11 @@ PENS
 "not infected" 1.0 0 -955883 true "" "plot count pacmen with [breed = \"super\"]"
 
 PLOT
-929
-99
-1129
-249
-Hamming Distance of Turtles
+918
+717
+1118
+867
+Mutation Chain
 NIL
 NIL
 1.0
@@ -1308,43 +1309,15 @@ NetLogo 5.2.1
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="experiment" repetitions="1" runMetricsEveryStep="true">
+  <experiment name="experiment" repetitions="50" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>count pacmen</metric>
+    <metric>count pills</metric>
+    <metric>count supers</metric>
     <metric>count turtles</metric>
-    <enumeratedValueSet variable="number-of-pacmen">
-      <value value="4"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="number-of-pills">
-      <value value="8"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="high-metabolism">
-      <value value="1.4"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="sugar-regrowth-rate">
-      <value value="3"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="low-catab-value">
-      <value value="0.3"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="swap-rate">
-      <value value="100"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="energy-take-from-host">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="energy-needed-repro">
-      <value value="20"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="low-metabolism">
-      <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="O2-starv-danger-threshold">
-      <value value="20"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="sugar-levels">
-      <value value="9"/>
-    </enumeratedValueSet>
+    <steppedValueSet variable="sugar-regrowth-rate" first="0" step="0.2" last="3"/>
   </experiment>
   <experiment name="experiment" repetitions="5" runMetricsEveryStep="true">
     <setup>setup</setup>
@@ -1355,6 +1328,54 @@ NetLogo 5.2.1
       <value value="1"/>
       <value value="2"/>
     </enumeratedValueSet>
+  </experiment>
+  <experiment name="experiment" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="500"/>
+    <metric>count pills</metric>
+    <metric>count pacmen</metric>
+    <metric>count super</metric>
+    <metric>max [length sequence-history] of turtles</metric>
+    <enumeratedValueSet variable="O2-starv-danger-threshold">
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sugar-levels">
+      <value value="7"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="energy-take-from-host">
+      <value value="-1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="low-catab-value">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="high-metabolism">
+      <value value="1.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="number-of-pills">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="number-of-pacmen">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="swap-rate">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sugar-regrowth-rate">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="energy-needed-repro">
+      <value value="27"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="low-metabolism">
+      <value value="1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="experiment" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <final>show count turtles</final>
+    <timeLimit steps="100"/>
   </experiment>
 </experiments>
 @#$#@#$#@

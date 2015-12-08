@@ -399,6 +399,8 @@ to setup-patches
     if max-psugar < 0
       [set max-psugar 0]
     set psugar max-psugar
+    ;; roughing up the landscape
+    if (random 3 = 1) [set psugar 0]
 
 
 
@@ -412,8 +414,11 @@ to setup-patches
     if max-pO2 < 0
       [set max-pO2 0]
     set pO2 max-pO2
+    ;; roughing up the landscape
+    if (random 2 = 1) [set pO2 0]
     set sugar-patches patches with [psugar > 0]
     set O2-patches patches with [pO2 > 0]
+
 
   ]
   color-sugar-patches
@@ -534,7 +539,6 @@ end
 
 
 
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 239
@@ -623,7 +627,7 @@ number-of-pills
 number-of-pills
 0
 30
-8
+2
 1
 1
 NIL
@@ -638,7 +642,7 @@ number-of-pacmen
 number-of-pacmen
 0
 30
-4
+2
 1
 1
 NIL
@@ -747,7 +751,7 @@ O2-starv-danger-threshold
 O2-starv-danger-threshold
 0
 40
-20
+15
 1
 1
 NIL
