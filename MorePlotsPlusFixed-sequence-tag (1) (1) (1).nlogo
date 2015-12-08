@@ -881,10 +881,10 @@ NIL
 HORIZONTAL
 
 PLOT
-18
-721
-218
-871
+13
+715
+252
+868
 dna of turtles
 sequence-tag
 NIL
@@ -893,16 +893,16 @@ NIL
 0.0
 20.0
 true
-true
+false
 "" "set-histogram-num-bars 32\nset-plot-pen-interval 1\nset-plot-x-range 0 31"
 PENS
 "pen-0" 1.0 1 -16777216 true "" "histogram ([sequence-tag] of turtles)"
 
 PLOT
-224
-720
-424
-870
+276
+715
+569
+869
 Pill  Populations
 time
 count
@@ -911,20 +911,19 @@ count
 0.0
 10.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot count turtles"
-"pen-1" 1.0 0 -7500403 true "" "plot count pills"
-"pen-2" 1.0 0 -2674135 true "" "plot count pills with [infecting = true]"
-"pen-3" 1.0 0 -955883 true "" "plot count pills with [infecting = false]"
-"pen-4" 1.0 0 -6459832 true "" ""
+"turtles" 1.0 0 -16777216 true "" "plot count turtles"
+"total pills" 1.0 0 -7500403 true "" "plot count pills"
+"infecting " 1.0 0 -2674135 true "" "plot count pills with [infecting = true]"
+"not infecting" 1.0 0 -955883 true "" "plot count pills with [infecting = false]"
 
 PLOT
-427
-721
-627
-871
+588
+716
+887
+866
 Pacmen Populations
 time
 count
@@ -933,13 +932,13 @@ count
 0.0
 10.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot count turtles"
-"pen-1" 1.0 0 -7500403 true "" "plot count pacmen"
-"pen-2" 1.0 0 -2674135 true "" "plot count pacmen with [infected = true]"
-"pen-3" 1.0 0 -955883 true "" "plot count pacmen with [breed = \"super\"]"
+"turtles" 1.0 0 -16777216 true "" "plot count turtles"
+"total pacmen" 1.0 0 -7500403 true "" "plot count pacmen"
+"infected" 1.0 0 -2674135 true "" "plot count pacmen with [infected = true]"
+"not infected" 1.0 0 -955883 true "" "plot count pacmen with [breed = \"super\"]"
 
 @#$#@#$#@
 ## WHAT IS IT?
