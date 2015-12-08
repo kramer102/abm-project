@@ -6,6 +6,7 @@ globals [
   sugar-patches
   O2-patches
   number-of-new-pills
+  super
 
 ]
 
@@ -22,6 +23,7 @@ turtles-own [
   metabolism ;if [2] of dna = 1 -> fast
   dna
   sequence-tag
+  sequence-history
 ]
 
 
@@ -48,7 +50,6 @@ to setup
   setup-pills
   setup-pacmen
   set number-of-new-pills 1
-  sequence-tag-set
   reset-ticks
 end
 
@@ -71,7 +72,9 @@ to go
   [if check-pac-death [die]]
   ask pills
   [if check-pill-death [die]]
-sequence-tag-set
+  ask turtles [sequence-tag-set]
+  update-super
+  track-sequence
  ; histogram [dna] of turtles
  ; set-current-plot
 
@@ -285,7 +288,20 @@ to remove-dead-pills
     [set infected false]
 end
 
+;; tracking the changes in dna sequence
+;; adding a list var to turtles starting it with dna sequence
+to track-sequence
+  ask turtles [
+    if (sequence-tag != last sequence-history)
+    [
+      set sequence-history lput sequence-tag sequence-history
+    ]
+  ]
+end
 
+to update-super
+  set super pacmen with [color = 113]
+end
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;; main reporters ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -392,11 +408,11 @@ to-report classify [new-turtle]
   ;; could make one for pills too.  Could use to make offspring of pac into pills too
 end
 
-to-report dna-average-pill
-;  histogram ([sequence-tag] of turtles)
-end
-to-report dna-average-pacman
-end
+;to-report dna-average-pill
+;;  histogram ([sequence-tag] of turtles)
+;end
+;to-report dna-average-pacman
+;end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; setup procedures ;;;;;;;;;;;;;
 
 
@@ -463,6 +479,8 @@ to setup-pills
     ifelse ((item 2 dna) = 0)
     [set metabolism low-metabolism] ;;amounts are purely a guess
     [set metabolism high-metabolism] ;;same as above
+    sequence-tag-set
+    set sequence-history (list sequence-tag)
     ]
   ;; creating at around 10% with good
   let percent-with-great-catab .10 ; could comment out and make a slider
@@ -474,6 +492,9 @@ to setup-pills
     ask pills with [color = red][  ;;making a few with O2 type catabolism
     set dna replace-item 0 dna 1
     set host-pac nobody
+    sequence-tag-set
+    set sequence-history (list sequence-tag)
+
     ]
 
   ]
@@ -500,6 +521,8 @@ to setup-pacmen
     set O2 0
     set max-O2 10
     set infectors []
+    sequence-tag-set
+    set sequence-history (list sequence-tag)
     ]
 end
 
@@ -521,6 +544,8 @@ to setup-new-pills ;;the kind we need for supers
     ifelse ((item 2 dna) = 0)
     [set metabolism low-metabolism] ;;amounts are purely a guess
     [set metabolism high-metabolism] ;;same as above
+    sequence-tag-set
+    set sequence-history (list sequence-tag)
     ]
   ;; creating at around 10% with good
 ;  let percent-with-great-catab .10 ; could comment out and make a slider
@@ -532,14 +557,14 @@ to setup-new-pills ;;the kind we need for supers
     ask pills with [color = red][  ;;making a few with O2 type catabolism
     set dna replace-item 0 dna 1
     set host-pac nobody
+    sequence-tag-set
+    set sequence-history (list sequence-tag)
     ]
 
 
 end
-
+;; turtle procedure to track dna changes
 to sequence-tag-set
-  ask turtles
-[
 if ([dna] of self  = [0 0 0 0 0])[set sequence-tag 0]
 if ([dna] of self  = [0 0 0 0 1])[set sequence-tag 1]
 if ([dna] of self  = [0 0 0 1 0])[set sequence-tag 2]
@@ -572,12 +597,10 @@ if ([dna] of self  = [1 1 1 0 0])[set sequence-tag 28]
 if ([dna] of self  = [1 1 1 0 1])[set sequence-tag 29]
 if ([dna] of self  = [1 1 1 1 0])[set sequence-tag 30]
 if ([dna] of self  = [1 1 1 1 1])[set sequence-tag 31]
-]
 end
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; End Setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -731,7 +754,7 @@ low-catab-value
 low-catab-value
 0
 1
-0.3
+0.6
 .1
 1
 NIL
@@ -776,7 +799,7 @@ energy-needed-repro
 energy-needed-repro
 0
 40
-20
+27
 1
 1
 NIL
@@ -868,7 +891,7 @@ NIL
 0.0
 32.0
 0.0
-100.0
+20.0
 true
 true
 "" "set-histogram-num-bars 32\nset-plot-pen-interval 1\nset-plot-x-range 0 31"
